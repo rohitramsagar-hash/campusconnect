@@ -1,0 +1,173 @@
+/* ---- App shell: sidebar + main ------------------------------------------- */
+.app-shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100%;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.4rem 1rem;
+  background: var(--sidebar);
+  color: #fff;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0 0.4rem;
+}
+.brand strong {
+  display: block;
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.brand span {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.menu-toggle {
+  display: none;
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-sm);
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 600;
+  font-size: 0.93rem;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-link:hover {
+  background: var(--sidebar-2);
+  color: #fff;
+}
+.nav-link.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+.sidebar-user {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  border-radius: var(--radius);
+  background: var(--sidebar-2);
+}
+.sidebar-user-info {
+  min-width: 0;
+  flex: 1;
+}
+.sidebar-user-info strong {
+  display: block;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sidebar-user .btn {
+  width: 100%;
+}
+.sidebar-user .btn-ghost {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+.sidebar-user .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.main {
+  min-width: 0;
+  padding: 2rem 2.4rem 3rem;
+}
+
+.page {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.page-narrow {
+  max-width: 780px;
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.page-header p {
+  margin-top: 0.25rem;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+@media (min-width: 901px) {
+  /* keep the dark sidebar colour all the way down on long pages */
+  .app-shell {
+    background: linear-gradient(to right, var(--sidebar) 260px, var(--bg) 260px);
+  }
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: sticky;
+    z-index: 20;
+    height: auto;
+    gap: 0;
+    padding: 0.8rem 1rem;
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .nav,
+  .sidebar-user {
+    display: none;
+  }
+  .sidebar.open .nav {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .sidebar.open .sidebar-user {
+    display: flex;
+    margin-top: 1rem;
+  }
+  .main {
+    padding: 1.3rem 1rem 2.5rem;
+  }
+}
