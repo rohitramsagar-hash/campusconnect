@@ -27,6 +27,7 @@ services:
       TZ: Asia/Kolkata
       DB_PASSWORD: ${DB_PASSWORD:-rootpass}
       JWT_SECRET: ${JWT_SECRET:-docker-dev-secret-change-me-0123456789abcdef}
+      CORS_ORIGINS: http://localhost:3000,http://127.0.0.1:3000
     depends_on:
       db:
         condition: service_healthy
