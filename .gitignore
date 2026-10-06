@@ -14,3 +14,6 @@ frontend/.env
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Docker Compose secrets
+.env

@@ -1,0 +1,47 @@
+# CampusConnect - full stack with one command:
+#   docker compose up -d --build
+# App: http://localhost:3000   API: http://localhost:8080/api/health
+name: campusconnect
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-rootpass}
+      MYSQL_DATABASE: campusconnect
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_PASSWORD:-rootpass}"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    image: ${DOCKERHUB_USER:-local}/campusconnect-backend:latest
+    environment:
+      DB_URL: jdbc:mysql://db:3306/campusconnect?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: root
+      TZ: Asia/Kolkata
+      DB_PASSWORD: ${DB_PASSWORD:-rootpass}
+      JWT_SECRET: ${JWT_SECRET:-docker-dev-secret-change-me-0123456789abcdef}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    image: ${DOCKERHUB_USER:-local}/campusconnect-frontend:latest
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+
+volumes:
+  db-data:

@@ -8,6 +8,7 @@ admins assign them to staff, and everyone tracks each complaint from **Open** to
 | Frontend | React 19 (Vite), React Router, Axios, **plain CSS** |
 | Backend  | Java 17, Spring Boot 3.3, Spring Web, Spring Data JPA (Hibernate), Spring Security + JWT, Bean Validation |
 | Database | MySQL 8 |
+| DevOps   | Docker, Docker Compose, nginx |
 
 ---
 
@@ -149,6 +150,56 @@ mvn test
 
 10 end-to-end API tests run against an in-memory database (no MySQL needed): login errors, validation,
 the full complaint life cycle, private complaints, upvotes, role checks and dashboard numbers.
+
+---
+
+## Run with Docker
+
+Runs MySQL, the Spring Boot backend and the React frontend together - no Java, Maven, Node or MySQL
+needed on your machine, only **Docker Desktop**.
+
+```powershell
+docker compose up -d --build
+```
+
+| What | Where |
+|------|-------|
+| App | http://localhost:3000 |
+| API health | http://localhost:8080/api/health |
+| Demo login | admin@campus.edu / Admin@123 (all demo logins are listed above) |
+
+The first build takes a few minutes. Data is kept in the `db-data` volume between restarts.
+
+```powershell
+docker compose ps          # see the 3 containers
+docker compose logs -f backend   # watch backend logs (Ctrl+C to stop watching)
+docker compose down        # stop everything (data is kept)
+docker compose down -v     # stop and delete the database too
+```
+
+### Docker Hub images
+
+| Image | Link |
+|-------|------|
+| Backend (Spring Boot) | https://hub.docker.com/r/YOUR_DOCKERHUB_USERNAME/campusconnect-backend |
+| Frontend (React + nginx) | https://hub.docker.com/r/YOUR_DOCKERHUB_USERNAME/campusconnect-frontend |
+
+Run the published images without building (needs the `docker-compose.yml` from this repo):
+
+```powershell
+$env:DOCKERHUB_USER="YOUR_DOCKERHUB_USERNAME"
+docker compose pull backend frontend
+docker compose up -d --no-build
+```
+
+### How the containers talk to each other
+
+```
+Browser ──► frontend (nginx :80, published as :3000) ──/api/*──► backend (Spring Boot :8080) ──► db (MySQL :3306)
+```
+
+nginx serves the built React files and forwards every `/api/...` request to the `backend` container,
+so the browser only ever talks to one address (no CORS issues).
 
 ---
 
