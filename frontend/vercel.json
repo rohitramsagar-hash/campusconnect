@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/api/:path*", "destination": " https://campusconnect-xlps.onrender.com" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
