@@ -1,5 +1,14 @@
 # CampusConnect — Campus Issue & Complaint Management System
 
+## 🌐 Live demo
+
+**App:** https://campusconnect-five-orcin.vercel.app
+**API health:** https://campusconnect-xlps.onrender.com/api/health
+
+Demo logins: `admin@campus.edu` / `Admin@123` · `ravi.staff@campus.edu` / `Staff@123` · `student@campus.edu` / `Student@123`
+
+> Hosted on free plans (Vercel + Render). The first visit after a quiet period can take up to a minute while the backend wakes up. The live demo uses an in-memory database, so data resets when the backend restarts.
+
 A full-stack web app where students report campus problems (Wi-Fi, hostel, classrooms, transport…),
 admins assign them to staff, and everyone tracks each complaint from **Open** to **Resolved**.
 
