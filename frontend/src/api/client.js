@@ -8,9 +8,15 @@ export const tokenStore = {
   clear: () => localStorage.removeItem(TOKEN_KEY),
 };
 
+// Backend address. Locally this is "/api" (Vite forwards it to port 8080).
+// When deployed, VITE_API_URL points at the hosted backend; "/api" is added if it was left off.
+const rawApiUrl = (import.meta.env.VITE_API_URL || "").trim().replace(/\/+$/, "");
+const API_BASE = !rawApiUrl ? "/api" : rawApiUrl.endsWith("/api") ? rawApiUrl : `${rawApiUrl}/api`;
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "/api",
-  timeout: 15000,
+  baseURL: API_BASE,
+  // A free hosted backend can take up to a minute to wake up, so wait longer than usual.
+  timeout: 60000,
 });
 
 api.interceptors.request.use((config) => {
